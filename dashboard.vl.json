@@ -1,6 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": "Earth's Freshwater & Biological Water Distribution",
+
   "data": { "url": "water_cleaned.csv" },
 
   "params": [
@@ -24,7 +25,7 @@
     },
     {
       "name": "highlight",
-      "select": {"type": "point"},
+      "select": {"type": "point", "fields": ["Category"]},
       "bind": "legend"
     }
   ],
@@ -33,76 +34,70 @@
     {
       "hconcat": [
         {
-          "title": "Horizontal Bar Chart — Freshwater & Biological Water",
-          "hconcat": [
-            {
-              "transform": [
-                {
-                  "filter":
-                  "viewFilter === 'FreshwaterOnly' ? datum.CategoryGroup === 'Fresh Water' : true"
-                },
-                { "filter": "scaleType === 'linear'" }
-              ],
-              "mark": "bar",
-              "encoding": {
-                "y": {
-                  "field": "Category",
-                  "type": "nominal",
-                  "sort": "-x"
-                },
-                "x": {
-                  "field": "Volume_km3",
-                  "type": "quantitative",
-                  "scale": { "type": "linear" },
-                  "title": "Volume (km³)"
-                },
-                "color": { "field": "CategoryGroup" },
-                "opacity": {
-                  "condition": {"param": "highlight", "value": 1},
-                  "value": 0.4
-                },
-                "tooltip": [
-                  {"field": "Category"},
-                  {"field": "Volume_km3"},
-                  {"field": "Percent_Global_Freshwater"}
-                ]
-              }
+          "title": "Freshwater Comparison (Linear / Log)",
+          "transform": [
+            { "filter": "datum.CategoryGroup === 'Fresh Water'" }
+          ],
+          "mark": "bar",
+          "encoding": {
+            "y": {
+              "field": "Category",
+              "type": "nominal",
+              "sort": "-x",
+              "axis": {"title": null}
             },
-            {
-              "transform": [
-                {
-                  "filter":
-                  "viewFilter === 'FreshwaterOnly' ? datum.CategoryGroup === 'Fresh Water' : true"
-                },
-                { "filter": "scaleType === 'log'" }
-              ],
-              "mark": "bar",
-              "encoding": {
-                "y": {
-                  "field": "Category",
-                  "type": "nominal",
-                  "sort": "-x"
-                },
-                "x": {
-                  "field": "Volume_km3",
-                  "type": "quantitative",
-                  "scale": { "type": "log" },
-                  "title": "Volume (km³)"
-                },
-                "color": { "field": "CategoryGroup" },
-                "opacity": {
-                  "condition": {"param": "highlight", "value": 1},
-                  "value": 0.4
-                }
-              }
-            }
-          ]
+            "x": {
+              "field": "Volume_km3",
+              "type": "quantitative",
+              "scale": {"type": {"expr": "scaleType"}},
+              "title": "Volume (km³)"
+            },
+            "color": {
+              "field": "CategoryGroup",
+              "type": "nominal",
+              "scale": {"scheme": "tableau10"},
+              "title": "Group"
+            },
+            "opacity": {
+              "condition": {"param": "highlight", "value": 1},
+              "value": 0.4
+            },
+            "tooltip": [
+              {"field": "Category"},
+              {"field": "Volume_km3", "title": "Volume (km³)"},
+              {"field": "Percent_Global_Freshwater", "title": "% of Global Freshwater"}
+            ]
+          }
+        },
+        {
+          "title": "Freshwater Composition (100% stacked)",
+          "transform": [
+            { "filter": "datum.CategoryGroup === 'Fresh Water'" }
+          ],
+          "mark": "bar",
+          "width": 250,
+          "encoding": {
+            "x": {
+              "field": "Percent_Global_Freshwater",
+              "type": "quantitative",
+              "stack": "normalize",
+              "title": "Proportion of Freshwater"
+            },
+            "color": {
+              "field": "Category",
+              "type": "nominal",
+              "scale": {"scheme": "tableau10"}
+            },
+            "tooltip": [
+              {"field": "Category"},
+              {"field": "Percent_Global_Freshwater", "title": "% of Global Freshwater"}
+            ]
+          }
         }
       ]
     },
-
     {
-      "title": "Bubble Chart — Freshwater vs Biological Water",
+      "title": "Bubble Chart — Freshwater + Biological Water",
       "height": 300,
       "mark": {"type": "circle", "opacity": 0.75},
       "transform": [
@@ -123,42 +118,21 @@
           "scale": {"range": [100, 5000]},
           "title": "Volume (km³)"
         },
-        "color": { "field": "CategoryGroup" },
+        "color": {
+          "field": "CategoryGroup",
+          "type": "nominal",
+          "scale": {"scheme": "tableau10"},
+          "title": "Group"
+        },
         "opacity": {
           "condition": {"param": "highlight", "value": 1},
           "value": 0.4
         },
         "tooltip": [
           {"field": "Category"},
-          {"field": "Volume_km3"},
-          {"field": "Percent_Global_Freshwater"}
-        ]
-      }
-    },
-
-    {
-      "title": "100% Stacked Bar — Freshwater Composition",
-      "mark": "bar",
-      "height": 80,
-      "transform": [
-        { "filter": "datum.CategoryGroup === 'Fresh Water'" }
-      ],
-      "encoding": {
-        "x": {
-          "field": "ProportionOfFreshwater",
-          "type": "quantitative",
-          "stack": "normalize",
-          "title": "% of Freshwater"
-        },
-        "color": {
-          "field": "Category",
-          "type": "nominal",
-          "legend": {"title": "Freshwater Categories"}
-        },
-        "tooltip": [
-          {"field": "Category"},
-          {"field": "Volume_km3"},
-          {"field": "Percent_Global_Freshwater"}
+          {"field": "CategoryGroup"},
+          {"field": "Volume_km3", "title": "Volume (km³)"},
+          {"field": "Percent_Global_Freshwater", "title": "% of Global Freshwater"}
         ]
       }
     }
