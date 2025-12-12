@@ -6,17 +6,6 @@
     "anchor": "middle"
   },
   "data": {"url": "water_cleaned.csv", "format": {"type": "csv"}},
-  "params": [
-    {
-      "name": "scaleType",
-      "value": "linear",
-      "bind": {
-        "input": "select",
-        "options": ["linear", "log"],
-        "labels": ["Linear Scale", "Log Scale"]
-      }
-    }
-  ],
   "transform": [
     {
       "calculate": "datum['\\ufeffCategoryGroup'] != null ? datum['\\ufeffCategoryGroup'] : datum.CategoryGroup",
@@ -30,27 +19,64 @@
       "as": "VolumeNum"
     }
   ],
-  "mark": "bar",
-  "encoding": {
-    "y": {"field": "Category", "type": "nominal", "sort": "-x", "title": "Freshwater reservoir"},
-    "x": {"field": "VolumeNum", "type": "quantitative", "title": "Stored volume (km³)"},
-    "tooltip": [
-      {
-        "field": "Category",
-        "type": "nominal",
-        "title": "Reservoir"
-      },
-      {
-        "field": "VolumeNum",
-        "type": "quantitative",
-        "title": "Volume (km³)",
-        "format": ","
-      },
-      {
-        "field": "Percent_Global_Freshwater",
-        "type": "quantitative",
-        "title": "% of Global Freshwater"
+  "hconcat": [
+    {
+      "title": "Linear scale",
+      "mark": "bar",
+      "encoding": {
+        "y": {"field": "Category", "type": "nominal", "sort": "-x", "title": "Freshwater reservoir"},
+        "x": {"field": "VolumeNum", "type": "quantitative", "title": "Stored volume (km³)"},
+        "tooltip": [
+          {
+            "field": "Category",
+            "type": "nominal",
+            "title": "Reservoir"
+          },
+          {
+            "field": "VolumeNum",
+            "type": "quantitative",
+            "title": "Volume (km³)",
+            "format": ","
+          },
+          {
+            "field": "Percent_Global_Freshwater",
+            "type": "quantitative",
+            "title": "% of Global Freshwater"
+          }
+        ]
       }
-    ]
-  }
+    },
+        {
+      "title": "Logarithmic scale",
+      "mark": "bar",
+      "encoding": {
+        "y": {
+          "field": "Category",
+          "type": "nominal",
+          "sort": "-x",
+          "title": null
+        },
+        "x": {
+          "field": "VolumeNum",
+          "type": "quantitative",
+          "scale": { "type": "log" },
+          "title": "Stored volume (km³, log scale)"
+        },
+        "tooltip": [
+          { "field": "Category", "type": "nominal", "title": "Reservoir" },
+          {
+            "field": "VolumeNum",
+            "type": "quantitative",
+            "title": "Volume (km³)",
+            "format": ","
+          },
+          {
+            "field": "Percent_Global_Freshwater",
+            "type": "quantitative",
+            "title": "% of Global Freshwater"
+          }
+        ]
+      }
+    }
+  ]
 }
