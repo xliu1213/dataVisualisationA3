@@ -1,17 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Earth's Freshwater & Biological Water Distribution",
-  "data": { "url": "water_cleaned.csv" },
+  "title": {
+    "text": "Distribution of Earth’s Freshwater by Reservoir",
+    "subtitle": "Comparing volumes stored in major freshwater reservoirs",
+    "anchor": "middle"
+  },
+  "data": {"url": "water_cleaned.csv", "format": {"type": "csv"}},
   "params": [
-    {
-      "name": "viewFilter",
-      "value": "FreshwaterOnly",
-      "bind": {
-        "input": "select",
-        "options": ["FreshwaterOnly", "FreshwaterAndBiological"],
-        "labels": ["Freshwater Only", "Freshwater + Biological"]
-      }
-    },
     {
       "name": "scaleType",
       "value": "linear",
@@ -20,36 +15,42 @@
         "options": ["linear", "log"],
         "labels": ["Linear Scale", "Log Scale"]
       }
-    },
-    {
-      "name": "highlight",
-      "select": {"type": "point", "fields": ["Category"]},
-      "bind": "legend"
     }
   ],
-
-  "vconcat": [
+  "transform": [
     {
-      "hconcat": [
-        {
-          "transform": [
-            {"filter": "datum.CategoryGroup === 'Fresh Water'"},
-            {"filter": "scaleType === 'linear'"}
-          ],
-          "mark": "bar",
-          "encoding": {
-            "y": {"field": "Category", "type": "nominal", "sort": "-x"},
-            "x": {
-              "field": "Volume_km3",
-              "type": "quantitative",
-              "scale": {"type": "linear"},
-              "title": "Volume (km³)"
-            },
-            "color": {"field": "CategoryGroup"},
-            "opacity": {"condition": {"param": "highlight", "value": 1}, "value": 0.4}
-          }
-        }
-      ]
+      "calculate": "datum['\\ufeffCategoryGroup'] != null ? datum['\\ufeffCategoryGroup'] : datum.CategoryGroup",
+      "as": "CategoryGroupClean"
+    },
+    {
+      "filter": "datum.CategoryGroupClean === 'Fresh Water'"
+    },
+    {
+      "calculate": "toNumber(datum.Volume_km3)",
+      "as": "VolumeNum"
     }
-  ]
+  ],
+  "mark": "bar",
+  "encoding": {
+    "y": {"field": "Category", "type": "nominal", "sort": "-x", "title": "Freshwater reservoir"},
+    "x": {"field": "VolumeNum", "type": "quantitative", "title": "Stored volume (km³)"},
+    "tooltip": [
+      {
+        "field": "Category",
+        "type": "nominal",
+        "title": "Reservoir"
+      },
+      {
+        "field": "VolumeNum",
+        "type": "quantitative",
+        "title": "Volume (km³)",
+        "format": ","
+      },
+      {
+        "field": "Percent_Global_Freshwater",
+        "type": "quantitative",
+        "title": "% of Global Freshwater"
+      }
+    ]
+  }
 }

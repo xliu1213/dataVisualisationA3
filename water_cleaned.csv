@@ -1,15 +1,15 @@
-﻿ Category Group ,Category,Volume_km3,Percent_Global_Freshwater
-Fresh Water,"Ice caps, glaciers, and permanent snow","24,064,000",68.70
-Fresh Water,"Groundwater, fresh","10,530,000",30.06
-Fresh Water,Ground ice and permafrost,"300,000",0.86
-Fresh Water,"Lakes, fresh water","91,000",0.26
-Fresh Water,Soil moisture,"16,500",0.05
-Fresh Water,Atmosphere,"12,900",0.04
-Fresh Water,Swamps,"11,470",0.03
-Fresh Water,Rivers,"2,120",0.01
-Biological Water,"Human bodies, both sexes",0.20,
+CategoryGroup,Category,Volume_km3,Percent_Global_Freshwater
+Fresh Water,Ice caps glaciers and permanent snow,24064000,68.7
+Fresh Water,Groundwater fresh,10530000,30.06
+Fresh Water,Ground ice and permafrost,300000,0.86
+Fresh Water,Lakes fresh water,91000,0.26
+Fresh Water,Soil moisture,16500,0.05
+Fresh Water,Atmosphere,12900,0.04
+Fresh Water,Swamps,11470,0.03
+Fresh Water,Rivers,2120,0.01
+Biological Water,Human bodies both sexes,0.2,
 Biological Water,Horses,0.02,
 Biological Water,Pigs,0.05,
 Biological Water,Blue Whale,0.002,
-Biological Water,Trees,"586,604",1.67
+Biological Water,Trees,586604,1.67
 Biological Water,Insects,12,
