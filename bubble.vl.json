@@ -1,0 +1,79 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
+  "title": {
+    "text": "Freshwater vs Biological Water Reservoirs",
+    "subtitle": "Even the largest biological reservoirs store far less water than freshwater systems",
+    "anchor": "middle"
+  },
+
+  "width": 500,
+  "height": 300,
+
+  "data": {
+    "url": "water_cleaned.csv",
+    "format": { "type": "csv" }
+  },
+
+  "transform": [
+    {
+      "calculate": "datum['\\ufeffCategoryGroup'] != null ? datum['\\ufeffCategoryGroup'] : datum.CategoryGroup",
+      "as": "CategoryGroupClean"
+    },
+    {
+      "calculate": "toNumber(datum.Volume_km3)",
+      "as": "VolumeNum"
+    }
+  ],
+
+  "mark": {
+    "type": "circle",
+    "opacity": 0.8,
+    "stroke": "black",
+    "strokeWidth": 0.5
+  },
+
+  "encoding": {
+    "x": {
+      "field": "CategoryGroupClean",
+      "type": "nominal",
+      "title": "Water system",
+      "axis": { "labelAngle": 0 }
+    },
+
+    "y": {
+      "field": "Category",
+      "type": "nominal",
+      "title": null,
+      "sort": "-size"
+    },
+
+    "size": {
+      "field": "VolumeNum",
+      "type": "quantitative",
+      "scale": { "range": [200, 8000] },
+      "title": "Stored volume (km³)"
+    },
+
+    "color": {
+      "field": "CategoryGroupClean",
+      "type": "nominal",
+      "scale": {
+        "domain": ["Fresh Water", "Biological Water"],
+        "range": ["#1f77b4", "#2ca02c"]
+      },
+      "legend": { "title": "Water system" }
+    },
+
+    "tooltip": [
+      { "field": "Category", "type": "nominal", "title": "Reservoir" },
+      { "field": "CategoryGroupClean", "type": "nominal", "title": "System" },
+      {
+        "field": "VolumeNum",
+        "type": "quantitative",
+        "title": "Stored volume (km³)",
+        "format": ","
+      }
+    ]
+  }
+}
