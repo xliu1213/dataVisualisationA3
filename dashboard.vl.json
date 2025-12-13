@@ -137,7 +137,7 @@
         "size": {
           "field": "VolumeNum",
           "type": "quantitative",
-          "scale": { "range": [300, 9000] },
+          "scale": { "type": "sqrt", "range": [300, 9000] },
           "title": "Stored volume (km³)"
         },
         "color": {
