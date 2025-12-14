@@ -31,11 +31,9 @@
           "calculate": "datum['\\ufeffCategoryGroup'] != null ? datum['\\ufeffCategoryGroup'] : datum.CategoryGroup",
           "as": "CategoryGroupClean"
         },
+        { "filter": "datum.CategoryGroupClean === 'Fresh Water'" },
         {
-          "filter": "datum.CategoryGroupClean === 'Fresh Water'"
-        },
-        {
-          "calculate": "toNumber(datum.Volume_km3)",
+          "calculate": "toNumber(replace(datum.Volume_km3, ',', ''))",
           "as": "VolumeNum"
         }
       ],
