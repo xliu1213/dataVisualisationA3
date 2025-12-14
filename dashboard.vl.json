@@ -28,8 +28,7 @@
         {
           "calculate": "toNumber(replace(datum.Volume_km3, /,/g, ''))",
           "as": "VolumeNum"
-        },
-        {"filter": "datum.VolumeNum > 0"}  
+        }
       ],
       "resolve": {"scale": {"x": "independent"}},
       "layer": [
