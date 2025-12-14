@@ -33,9 +33,10 @@
         },
         { "filter": "datum.CategoryGroupClean === 'Fresh Water'" },
         {
-          "calculate": "toNumber(replace(datum.Volume_km3, ',', ''))",
+          "calculate": "toNumber(replace(datum.Volume_km3, /,/g, ''))",
           "as": "VolumeNum"
         }
+
       ],
 
       "resolve": {
