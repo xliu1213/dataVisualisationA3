@@ -68,7 +68,8 @@
         },
         {
           "transform": [
-            { "filter": "scaleType === 'log'" }
+            { "filter": "scaleType === 'log'" },
+            { "filter": "datum.VolumeNum > 0" }
           ],
           "mark": "bar",
           "encoding": {
