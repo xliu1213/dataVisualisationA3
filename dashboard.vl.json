@@ -1,5 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
   "params": [
     {
       "name": "scaleType",
@@ -11,6 +12,7 @@
       }
     }
   ],
+
   "vconcat": [
     {
       "title": {
@@ -18,22 +20,37 @@
         "subtitle": "Toggle between linear and logarithmic scale",
         "anchor": "middle"
       },
-      "data": {"url": "water_cleaned.csv", "format": {"type": "csv"}},
+
+      "data": {
+        "url": "water_cleaned.csv",
+        "format": { "type": "csv" }
+      },
+
       "transform": [
         {
-          "calculate": "datum['CategoryGroup'] != null ? datum['CategoryGroup'] : datum.CategoryGroup",
+          "calculate": "datum['\\ufeffCategoryGroup'] != null ? datum['\\ufeffCategoryGroup'] : datum.CategoryGroup",
           "as": "CategoryGroupClean"
         },
-        {"filter": "datum.CategoryGroupClean === 'Fresh Water'"},
         {
-          "calculate": "toNumber(replace(datum.Volume_km3, /,/g, ''))",
+          "filter": "datum.CategoryGroupClean === 'Fresh Water'"
+        },
+        {
+          "calculate": "toNumber(datum.Volume_km3)",
           "as": "VolumeNum"
         }
       ],
-      "resolve": {"scale": {"x": "independent"}},
+
+      "resolve": {
+        "scale": {
+          "x": "independent"
+        }
+      },
+
       "layer": [
         {
-          "transform": [{"filter": "scaleType === 'linear'"}],
+          "transform": [
+            { "filter": "scaleType === 'linear'" }
+          ],
           "mark": "bar",
           "encoding": {
             "y": {
@@ -50,7 +67,9 @@
           }
         },
         {
-          "transform": [{"filter": "scaleType === 'log'"}],
+          "transform": [
+            { "filter": "scaleType === 'log'" }
+          ],
           "mark": "bar",
           "encoding": {
             "y": {
@@ -62,51 +81,63 @@
             "x": {
               "field": "VolumeNum",
               "type": "quantitative",
-              "scale": {"type": "log", "zero": false},
+              "scale": { "type": "log" },
               "title": "Stored volume (km³, log scale)"
             }
           }
         }
       ]
     },
+
     {
       "title": {
         "text": "Freshwater vs Biological Water Reservoirs",
         "subtitle": "Even the largest biological reservoirs store far less water than freshwater systems",
         "anchor": "middle"
       },
+
       "width": 500,
       "height": 320,
-      "data": {"url": "water_cleaned.csv", "format": {"type": "csv"}},
+
+      "data": {
+        "url": "water_cleaned.csv",
+        "format": { "type": "csv" }
+      },
+
       "transform": [
         {
-          "calculate": "datum['CategoryGroup'] != null ? datum['CategoryGroup'] : datum.CategoryGroup",
+          "calculate": "datum['\\ufeffCategoryGroup'] != null ? datum['\\ufeffCategoryGroup'] : datum.CategoryGroup",
           "as": "CategoryGroupClean"
         },
         {
-          "calculate": "toNumber(replace(datum.Volume_km3, /,/g, ''))",
+          "calculate": "toNumber(datum.Volume_km3)",
           "as": "VolumeNum"
-        },
-        {"filter": "datum.VolumeNum > 0"}  
+        }
       ],
+
       "mark": {
         "type": "circle",
         "opacity": 0.8,
         "stroke": "black",
         "strokeWidth": 0.5
       },
+
       "encoding": {
         "x": {
           "field": "CategoryGroupClean",
           "type": "nominal",
           "title": "Water system",
-          "axis": {"labelAngle": 0}
+          "axis": { "labelAngle": 0 }
         },
-        "y": {"field": "Category", "type": "nominal", "title": null},
+        "y": {
+          "field": "Category",
+          "type": "nominal",
+          "title": null
+        },
         "size": {
           "field": "VolumeNum",
           "type": "quantitative",
-          "scale": {"type": "sqrt", "range": [300, 9000]},
+          "scale": { "type": "sqrt", "range": [300, 9000] },
           "title": "Stored volume (km³)"
         },
         "color": {
@@ -116,11 +147,11 @@
             "domain": ["Fresh Water", "Biological Water"],
             "range": ["#1f77b4", "#2ca02c"]
           },
-          "legend": {"title": "Water system"}
+          "legend": { "title": "Water system" }
         },
         "tooltip": [
-          {"field": "Category", "type": "nominal", "title": "Reservoir"},
-          {"field": "CategoryGroupClean", "type": "nominal", "title": "System"},
+          { "field": "Category", "type": "nominal", "title": "Reservoir" },
+          { "field": "CategoryGroupClean", "type": "nominal", "title": "System" },
           {
             "field": "VolumeNum",
             "type": "quantitative",
