@@ -80,7 +80,7 @@
             "x": {
               "field": "VolumeNum",
               "type": "quantitative",
-              "scale": { "type": "log" },
+              "scale": { "type": "log", "zero": false },
               "title": "Stored volume (km³, log scale)"
             }
           }
